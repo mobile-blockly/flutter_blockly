@@ -1,3 +1,6 @@
+String htmlScript({String? script = ''}) {
+  return '''
+<script>
 window.onload = () => {
   const onCallback = (event, data) => {
     if (window.FlutterWebView) {
@@ -138,7 +141,6 @@ window.onload = () => {
   function handleEvent({event, data}) {
     try {
       if (editor[event]) {
-
         editor[event](data);
       }
     } catch (err) {
@@ -147,4 +149,9 @@ window.onload = () => {
   }
 
   window.message = handleEvent;
+
+  $script
+}
+</script>
+''';
 }
