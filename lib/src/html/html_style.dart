@@ -1,3 +1,6 @@
+String htmlStyle({String? style = ''}) {
+  return '''
+<style>
 html,
 body {
   height: 100%;
@@ -18,4 +21,8 @@ body {
   flex: 1 0 auto;
   flex-direction: column;
   box-sizing: border-box;
+}
+$style
+</style>
+''';
 }

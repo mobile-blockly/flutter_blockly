@@ -21,7 +21,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/html/index.html
-    - assets/html/style.css
-    - assets/html/script.js
