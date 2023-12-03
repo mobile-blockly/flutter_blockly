@@ -1,8 +1,9 @@
 name: flutter_blockly
 description: A Flutter Blockly visual programming editor.
 repository: https://github.com/SerSerch/flutter_blockly
+homepage: https://github.com/SerSerch/flutter_blockly
 issue_tracker: https://github.com/SerSerch/flutter_blockly/issues
-version: 0.0.1
+version: 1.0.0
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
