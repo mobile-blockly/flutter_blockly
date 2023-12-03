@@ -1,5 +1,5 @@
 name: flutter_blockly
-description: A Flutter Blockly visual programming editor.
+description: A Flutter Blockly visual programming editor. The Blockly library adds an editor to your app that represents coding concepts as interlocking blocks.
 repository: https://github.com/SerSerch/flutter_blockly
 homepage: https://github.com/SerSerch/flutter_blockly
 issue_tracker: https://github.com/SerSerch/flutter_blockly/issues
