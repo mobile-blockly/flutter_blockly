@@ -178,3 +178,23 @@ class ZoomOptions {
         'wheel': wheel,
       };
 }
+
+@immutable
+class BlocklyState {
+  const BlocklyState({
+    this.xml = '',
+    this.json = const {},
+  });
+
+  final String? xml;
+  final Map<String, dynamic>? json;
+
+  Map<String, dynamic> toJson() => {
+        'xml': xml,
+        'json': json,
+      };
+
+  BlocklyState.fromJson(Map<String, dynamic> data)
+      : xml = data['xml'],
+        json = data['json'];
+}

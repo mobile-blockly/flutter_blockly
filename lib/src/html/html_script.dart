@@ -33,26 +33,23 @@ window.onload = () => {
   const BlocklyEditor = () => {
     let workspace = null;
     let toolboxConfig = null;
-    let xml = '<xml xmlns="https://developers.google.com/blockly/xml"></xml>';
-    let json = {};
+    let xml = null;
+    let json = null;
     let readOnly = false;
 
 
-    function init({workspaceConfiguration, toolboxConfiguration, initial}) {
+    function init({workspaceConfiguration, initial}) {
       const element = document.querySelector('#blocklyEditor');
-      if (!Blockly || !element || toolboxConfig || !workspaceConfiguration || !toolboxConfiguration) {
+      if (!Blockly || !element || toolboxConfig) {
         return;
       }
 
-      const worksp = Blockly.inject(element, {
-        ...workspaceConfiguration,
-        toolbox: toolboxConfiguration,
-      });
-
+      const worksp = Blockly.inject(element, workspaceConfiguration);
       if (worksp) {
         workspace = worksp;
-        toolboxConfig = toolboxConfiguration;
-        readOnly = !!workspaceConfiguration.readOnly;
+        toolboxConfig = workspaceConfiguration?.toolbox || {contents: []};
+        readOnly = !!workspaceConfiguration?.readOnly;
+        onCallback('toolboxConfig', toolboxConfig);
         onCallback('onInject', {xml, json});
         _setState(initial);
         workspace.addChangeListener(listener);
@@ -84,10 +81,10 @@ window.onload = () => {
     }
 
     function _setState(newState) {
-      if (newState && workspace) {
+      if (workspace) {
         if (typeof newState === 'string') {
           importFromXml(newState, workspace);
-        } else if (typeof newState === 'object') {
+        } else if (newState && typeof newState === 'object') {
           importFromJson(newState, workspace);
         }
         _saveData(workspace);

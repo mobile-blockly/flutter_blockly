@@ -10,6 +10,10 @@ class ToolboxInfo {
   final List contents;
   final String? kind;
 
+  ToolboxInfo.fromJson(Map<String, dynamic> data)
+      : contents = data['contents'],
+        kind = data['kind'];
+
   Map<String, dynamic> toJson() => {
         'contents': contents,
         'kind': kind,
