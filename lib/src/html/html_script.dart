@@ -1,3 +1,4 @@
+/// The html script used for the WebViewWidget
 String htmlScript({String? script = ''}) {
   return '''
 <script>
@@ -31,63 +32,44 @@ window.onload = () => {
   };
 
   const BlocklyEditor = () => {
-    let workspace = null;
-    let toolboxConfig = null;
-    let xml = null;
-    let json = null;
-    let readOnly = false;
+    let _workspace = null;
+    let _toolboxConfig = null;
+    let _state = BlocklyState();
+    let _readOnly = false;
 
-
-    function init({workspaceConfiguration, initial}) {
+    function init(params) {
       const element = document.querySelector('#blocklyEditor');
-      if (!Blockly || !element || toolboxConfig) {
+      if (!Blockly || !element || _toolboxConfig) {
         return;
       }
 
-      const worksp = Blockly.inject(element, workspaceConfiguration);
-      if (worksp) {
-        workspace = worksp;
-        toolboxConfig = workspaceConfiguration?.toolbox || {contents: []};
-        readOnly = !!workspaceConfiguration?.readOnly;
-        onCallback('toolboxConfig', toolboxConfig);
-        onCallback('onInject', {xml, json});
-        _setState(initial);
-        workspace.addChangeListener(listener);
+      const workspace = Blockly.inject(element, params?.workspaceConfiguration);
+
+      if (workspace) {
+        _workspace = workspace;
+        _toolboxConfig = params?.workspaceConfiguration?.toolbox || {contents: []};
+        _readOnly = !!params?.workspaceConfiguration?.readOnly;
+        onCallback('toolboxConfig', _toolboxConfig);
+        onCallback('onInject', _state);
+        _setState(params?.initial);
+        _workspace.addChangeListener(listener);
+      }
+    }
+
+    function dispose() {
+      if (_workspace) {
+        _workspace.removeChangeListener(listener);
+        _workspace.dispose();
+        let _workspace = null;
+        let _toolboxConfig = null;
+        let _state = BlocklyState();
+        let _readOnly = false;
       }
     }
 
     function listener(event) {
-      if (!event.isUiEvent && workspace) {
-        _saveData(workspace);
-      }
-    }
-
-    function _saveData(workspace) {
-      try {
-        const newXml = Blockly.Xml.domToText(
-          Blockly.Xml.workspaceToDom(workspace),
-        );
-        if (newXml !== xml) {
-          xml = newXml;
-          json = Blockly.serialization.workspaces.save(workspace);
-          onCallback('onChange', {xml, json});
-          return true;
-        }
-        return false;
-      } catch (err) {
-        onCallback('onError', err?.toString());
-        return false;
-      }
-    }
-
-    function _setState(newState) {
-      if (workspace) {
-        if (typeof newState === 'string') {
-          importFromXml(newState, workspace);
-        } else if (newState && typeof newState === 'object') {
-          importFromJson(newState, workspace);
-        }
-        _saveData(workspace);
+      if (!event.isUiEvent && _workspace) {
+        _saveData();
       }
     }
 
@@ -95,12 +77,12 @@ window.onload = () => {
       try {
         if (
           configuration &&
-          workspace &&
-          !readOnly
+          _workspace &&
+          !_readOnly
         ) {
-          toolboxConfig = configuration;
-          workspace.updateToolbox(configuration);
-          onCallback('toolboxConfig', configuration);
+          _toolboxConfig = configuration;
+          _workspace.updateToolbox(configuration);
+          onCallback('toolboxConfig', _toolboxConfig);
         }
       } catch (err) {
         onCallback('onError', err?.toString());
@@ -118,15 +100,54 @@ window.onload = () => {
     }
 
     function state() {
+      return _state;
+    }
+
+    function BlocklyState({xml, json} = {}) {
       return {
-        xml,
-        json,
+        xml: xml || '<xml xmlns="https://developers.google.com/blockly/xml"></xml>',
+        json: json || {},
       };
     }
 
+    function _setState(newState) {
+      if (_workspace) {
+        if (typeof newState === 'string') {
+          importFromXml(newState, _workspace);
+        } else if (newState && typeof newState === 'object') {
+          importFromJson(newState, _workspace);
+        }
+        _saveData();
+      }
+    }
+
+    function _saveData() {
+      try {
+        if (_workspace) {
+          const newXml = Blockly.Xml.domToText(
+            Blockly.Xml.workspaceToDom(_workspace),
+          );
+          if (newXml !== _state.xml) {
+            _state = BlocklyState({
+              xml: newXml,
+              json: Blockly.serialization.workspaces.save(_workspace),
+            });
+
+            onCallback('onChange', _state);
+            return true;
+          }
+        }
+        return false;
+      } catch (err) {
+        onCallback('onError', err?.toString());
+        return false;
+      }
+    }
+
     return {
-      workspace,
+      workspace: _workspace,
       init,
+      dispose,
       state,
       updateToolboxConfig,
       updateState,

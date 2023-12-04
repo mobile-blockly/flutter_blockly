@@ -3,6 +3,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import 'blockly_editor.dart';
 
+/// A Flutter Blockly widget - visual programming editor
 class BlocklyEditorWidget extends StatefulWidget {
   const BlocklyEditorWidget({
     super.key,
@@ -14,11 +15,22 @@ class BlocklyEditorWidget extends StatefulWidget {
     this.onDispose,
   });
 
+  /// [BlocklyOptions interface](https://developers.google.com/blockly/reference/js/blockly.blocklyoptions_interface)
   final Map<String, dynamic>? workspaceConfiguration;
+
+  /// Blockly initial state (string or json)
   final dynamic initial;
+
+  /// It is called on any error
   final Function? onError;
+
+  /// It is called on inject editor
   final Function? onInject;
+
+  /// It is called on change editor sate
   final Function? onChange;
+
+  /// It is called on dispose editor
   final Function? onDispose;
 
   @override
@@ -26,16 +38,14 @@ class BlocklyEditorWidget extends StatefulWidget {
 }
 
 class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
-  late final WebViewController blocklyController;
   late final BlocklyEditor editor;
 
   @override
   void initState() {
     super.initState();
 
-    blocklyController = WebViewController();
+    /// Create new BlocklyEditor
     editor = BlocklyEditor(
-      blocklyController: blocklyController,
       workspaceConfiguration: widget.workspaceConfiguration,
       initial: widget.initial,
       onError: widget.onError,
@@ -43,9 +53,13 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
       onChange: widget.onChange,
       onDispose: widget.onDispose,
     );
-    blocklyController
+
+    /// Configuration the WebViewController
+    editor.blocklyController
       ..setNavigationDelegate(NavigationDelegate(
-        onPageFinished: editor.onLoadEnd,
+        onPageFinished: (url) {
+          editor.init();
+        },
       ))
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..addJavaScriptChannel(
@@ -58,15 +72,13 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
   @override
   void dispose() {
     super.dispose();
-    if (widget.onDispose != null) {
-      widget.onDispose!(editor.state());
-    }
+    editor.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return WebViewWidget(
-      controller: blocklyController,
+      controller: editor.blocklyController,
     );
   }
 }

@@ -1,3 +1,4 @@
+/// The html style used for the WebViewWidget
 String htmlStyle({String? style = ''}) {
   return '''
 <style>
