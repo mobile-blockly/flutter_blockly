@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_blockly/flutter_blockly.dart';
 
@@ -26,6 +28,7 @@ class _WebViewAppState extends State<WebViewApp> {
       'snap': true,
     },
   };
+
   final initial = {
     "blocks": {
       "languageVersion": 0,
@@ -41,6 +44,22 @@ class _WebViewAppState extends State<WebViewApp> {
     }
   };
 
+  void onInject(state) {
+    debugPrint('onInject: ${state.xml}\n${jsonEncode(state.json)}');
+  }
+
+  void onChange(state) {
+    debugPrint('onChange: ${state.xml}\n${jsonEncode(state.json)}');
+  }
+
+  void onDispose(state) {
+    debugPrint('onDispose: ${state.xml}\n${jsonEncode(state.json)}');
+  }
+
+  void onError(dynamic err) {
+    debugPrint('onError: $err');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +67,10 @@ class _WebViewAppState extends State<WebViewApp> {
         child: BlocklyEditorWidget(
           workspaceConfiguration: workspaceConfiguration,
           initial: initial,
+          onInject: onInject,
+          onChange: onChange,
+          onDispose: onDispose,
+          onError: onError,
         ),
       ),
     );
