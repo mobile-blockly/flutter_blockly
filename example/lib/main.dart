@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_blockly/flutter_blockly.dart';
 
+import 'content.dart';
+
 void main() {
   runApp(
     const MaterialApp(
@@ -27,21 +29,7 @@ class _WebViewAppState extends State<WebViewApp> {
       'colour': '#ccc',
       'snap': true,
     },
-  };
-
-  final initial = {
-    "blocks": {
-      "languageVersion": 0,
-      "blocks": [
-        {
-          "type": "text",
-          "id": "Y|Ad[E=)p\$+Lu41MXB!o",
-          "x": 70,
-          "y": 30,
-          "fields": {"TEXT": "JSON"}
-        }
-      ]
-    }
+    'toolbox': initialToolboxJson,
   };
 
   void onInject(state) {
@@ -66,7 +54,7 @@ class _WebViewAppState extends State<WebViewApp> {
       body: SafeArea(
         child: BlocklyEditorWidget(
           workspaceConfiguration: workspaceConfiguration,
-          initial: initial,
+          initial: initialJson,
           onInject: onInject,
           onChange: onChange,
           onDispose: onDispose,
