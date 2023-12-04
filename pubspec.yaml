@@ -20,6 +20,12 @@ dev_dependencies:
   flutter_lints: ^3.0.1
 
 flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: flutter_blockly
+      ios:
+        default_package: flutter_blockly
 
 topics:
   - blockly
