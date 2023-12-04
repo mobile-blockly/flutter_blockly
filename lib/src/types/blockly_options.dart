@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'blockly_theme.dart';
 import 'blockly_toolbox.dart';
 
+/// [BlocklyOptions interface](https://developers.google.com/blockly/reference/js/blockly.blocklyoptions_interface)
 @immutable
 class BlocklyOptions {
   const BlocklyOptions({
@@ -182,7 +183,7 @@ class ZoomOptions {
 @immutable
 class BlocklyState {
   const BlocklyState({
-    this.xml = '',
+    this.xml = '<xml xmlns="https://developers.google.com/blockly/xml"></xml>',
     this.json = const {},
   });
 

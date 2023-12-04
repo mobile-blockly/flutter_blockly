@@ -1,3 +1,4 @@
+/// The html render used for the WebViewWidget
 String htmlRender({String style = '', String script = ''}) {
   return '''
 <html>

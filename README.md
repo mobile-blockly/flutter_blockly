@@ -4,9 +4,86 @@
 <br/>
 [![pub version](https://img.shields.io/pub/v/flutter_blockly.svg)](https://pub.dev/packages/flutter_blockly)
 
-## Installation
+<details><summary>Click to see the screenshot</summary>
 
-See [Installation Instructions](https://github.com/SerSerch/flutter_blockly/blob/main/docs/installation.md).
+![Flutter Blockly editor](https://github-production-user-asset-6210df.s3.amazonaws.com/26460350/283968394-fdf46ed0-276b-4171-86fb-94f5d69940e4.png)
+
+</details>
+
+## [Change Log](https://github.com/SerSerch/flutter_blockly/blob/main/CHANGELOG.md).
+
+## Usage
+
+[BlocklyOptions interface](https://developers.google.com/blockly/reference/js/blockly.blocklyoptions_interface)
+
+<details><summary>Click to see the code</summary>
+
+  ```dart
+  import 'package:flutter_blockly/flutter_blockly.dart';
+  
+  // ...
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: BlocklyEditorWidget(
+          workspaceConfiguration: workspaceConfiguration,
+          initial: initial,
+          onInject: onInject,
+          onChange: onChange,
+          onDispose: onDispose,
+          onError: onError,
+        ),
+      ),
+    );
+  }
+  ```
+  
+</details>
+
+or if you want to use additional methods, see how it's implemented here
+<br>
+[BlocklyEditorWidget](https://github.com/SerSerch/flutter_blockly/blob/main/lib/src/blockly_editor_widget.dart)
+
+<details><summary>Click to see the code</summary>
+
+```dart
+import 'package:flutter_blockly/flutter_blockly.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+// ...
+
+class _MyWidgetState extends State<MyWidgetState> {
+  late final BlocklyEditor editor;
+
+  @override
+  void initState() {
+    super.initState();
+
+    editor = BlocklyEditor(
+      workspaceConfiguration: widget.workspaceConfiguration,
+      initial: widget.initial,
+      onError: widget.onError,
+      onInject: widget.onInject,
+      onChange: widget.onChange,
+      onDispose: widget.onDispose,
+    );
+    
+    // then you will have methods and WebViewController:
+    // editor.init();
+    // editor.dispose();
+    // editor.onMessage();
+    // editor.htmlRender();
+    // editor.updateToolboxConfig();
+    // editor.updateState();
+    // editor.state();
+    // editor.blocklyController;
+  }
+}
+```
+
+</details>
 
 ## Example
 
