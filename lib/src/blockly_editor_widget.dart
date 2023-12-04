@@ -5,6 +5,24 @@ import 'blockly_editor.dart';
 
 /// A Flutter Blockly widget - visual programming editor
 class BlocklyEditorWidget extends StatefulWidget {
+  /// ## Example
+  /// ```dart
+  /// @override
+  /// Widget build(BuildContext context) {
+  ///   return Scaffold(
+  ///     body: SafeArea(
+  ///       child: BlocklyEditorWidget(
+  ///         workspaceConfiguration: workspaceConfiguration,
+  ///         initial: initial,
+  ///         onInject: onInject,
+  ///         onChange: onChange,
+  ///         onDispose: onDispose,
+  ///         onError: onError,
+  ///       ),
+  ///     ),
+  ///   );
+  /// }
+  /// ```
   const BlocklyEditorWidget({
     super.key,
     this.workspaceConfiguration,

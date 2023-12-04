@@ -7,24 +7,24 @@ import 'html/html.dart' as html;
 import 'types/types.dart';
 
 /// The Flutter Blockly visual programming editor
-/// ## Example
-/// ```dart
-/// late final BlocklyEditor editor;
-///
-/// @override
-/// void initState() {
-///   super.initState();
-///   editor = BlocklyEditor(
-///     workspaceConfiguration: widget.workspaceConfiguration,
-///     initial: widget.initial,
-///     onError: widget.onError,
-///     onInject: widget.onInject,
-///     onChange: widget.onChange,
-///     onDispose: widget.onDispose,
-///   );
-/// }
-/// ```
 class BlocklyEditor {
+  /// ## Example
+  /// ```dart
+  /// late final BlocklyEditor editor;
+  ///
+  /// @override
+  /// void initState() {
+  ///   super.initState();
+  ///   editor = BlocklyEditor(
+  ///     workspaceConfiguration: widget.workspaceConfiguration,
+  ///     initial: widget.initial,
+  ///     onError: widget.onError,
+  ///     onInject: widget.onInject,
+  ///     onChange: widget.onChange,
+  ///     onDispose: widget.onDispose,
+  ///   );
+  /// }
+  /// ```
   BlocklyEditor({
     this.workspaceConfiguration,
     this.initial,
