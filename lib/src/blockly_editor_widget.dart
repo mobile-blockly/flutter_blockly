@@ -3,7 +3,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import 'blockly_editor.dart';
 
-/// A Flutter Blockly widget - visual programming editor
+/// The Flutter Blockly widget visual programming editor
 class BlocklyEditorWidget extends StatefulWidget {
   /// ## Example
   /// ```dart
@@ -74,11 +74,13 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
 
     /// Configuration the WebViewController
     editor.blocklyController
-      ..setNavigationDelegate(NavigationDelegate(
-        onPageFinished: (url) {
-          editor.init();
-        },
-      ))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: (url) {
+            editor.init();
+          },
+        ),
+      )
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..addJavaScriptChannel(
         'FlutterWebView',

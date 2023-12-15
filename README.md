@@ -18,27 +18,27 @@
 
 <details><summary>Click to see the code</summary>
 
-  ```dart
-  import 'package:flutter_blockly/flutter_blockly.dart';
-  
-  // ...
-  
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: BlocklyEditorWidget(
-          workspaceConfiguration: workspaceConfiguration,
-          initial: initial,
-          onInject: onInject,
-          onChange: onChange,
-          onDispose: onDispose,
-          onError: onError,
-        ),
-      ),
-    );
-  }
-  ```
+```dart
+import 'package:flutter_blockly/flutter_blockly.dart';
+
+// ...
+
+@override
+Widget build(BuildContext context) {
+return Scaffold(
+  body: SafeArea(
+    child: BlocklyEditorWidget(
+      workspaceConfiguration: workspaceConfiguration,
+      initial: initial,
+      onInject: onInject,
+      onChange: onChange,
+      onDispose: onDispose,
+      onError: onError,
+    ),
+  ),
+);
+}
+```
   
 </details>
 

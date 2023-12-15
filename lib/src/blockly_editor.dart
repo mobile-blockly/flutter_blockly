@@ -80,11 +80,14 @@ class BlocklyEditor {
     _readOnly = workspaceConfiguration?['readOnly'] ??
         this.workspaceConfiguration?['readOnly'] ??
         false;
-    _postData(event: 'init', data: {
-      'workspaceConfiguration':
-          workspaceConfiguration ?? this.workspaceConfiguration,
-      'initial': initial ?? this.initial,
-    });
+    _postData(
+      event: 'init',
+      data: {
+        'workspaceConfiguration':
+            workspaceConfiguration ?? this.workspaceConfiguration,
+        'initial': initial ?? this.initial,
+      },
+    );
   }
 
   /// ## Example
@@ -197,7 +200,8 @@ class BlocklyEditor {
   Future<void> _postData({required String event, dynamic data}) async {
     try {
       await blocklyController.runJavaScript(
-          "window.message({event: '$event', data: ${jsonEncode(data)}})");
+        "window.message(${jsonEncode({'event': event, 'data': data})})",
+      );
     } catch (err) {
       _onCallback(cb: onError, arg: err);
     }
