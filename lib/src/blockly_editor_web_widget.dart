@@ -69,10 +69,9 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
       onInject: widget.onInject,
       onChange: widget.onChange,
       onDispose: widget.onDispose,
-    )..init();
-
-    // editor.htmlRender();
-    editor.init();
+    )
+      ..htmlRender()
+      ..init();
   }
 
   @override

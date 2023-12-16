@@ -1,5 +1,5 @@
-/// The html style used for the WebViewWidget
-String htmlStyle({String? style = ''}) {
+/// The html style
+String htmlStyle({String? style}) {
   return '''
 <style>
 html,
@@ -24,10 +24,6 @@ body {
   z-index: 10;
   top: 0;
   left: 100%;
-  /* custom animation */
-  transition-property: left;
-  transition-duration: 0.3s;
-  transition-timing-function: linear;
 }
 .wrapper-active {
   left: 0;
@@ -38,7 +34,7 @@ body {
   flex-direction: column;
   box-sizing: border-box;
 }
-$style
+${style ?? ''}
 </style>
 ''';
 }

@@ -189,10 +189,11 @@ class BlocklyEditor {
   /// editor.blocklyController
   ///   ..loadHtmlString(editor.htmlRender());
   /// ```
-  String htmlRender({String? style, String? script}) {
+  String htmlRender({String? style, String? script, String? editor}) {
     return html.htmlRender(
       style: html.htmlStyle(style: style),
       script: html.htmlScript(script: script),
+      editor: editor ?? html.htmlEditor(),
     );
   }
 

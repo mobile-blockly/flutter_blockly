@@ -5,7 +5,9 @@ import 'package:js/js_util.dart';
 
 import './types/blockly_options.dart';
 import './types/blockly_toolbox.dart';
-import 'flutter_web_view.dart';
+import 'helpers/create_web_tag.dart';
+import 'helpers/flutter_web_view.dart';
+import 'html/html.dart' as html;
 
 /// The Flutter Blockly visual programming editor
 class BlocklyEditor {
@@ -63,14 +65,16 @@ class BlocklyEditor {
 
   /// ## Example
   /// ```dart
+  /// editor.init();
   /// ```
   void init({Map<String, dynamic>? workspaceConfiguration, dynamic initial}) {
-    if (_toolboxConfig != null) {
+    final Element? editor = document.querySelector('#blocklyEditor');
+    if (_toolboxConfig != null || editor == null) {
       return;
     }
 
     final webView = FlutterWebView();
-    webView.postMessage = onMessage;
+    webView.postMessage = _onMessage;
     final export = createDartExport(webView);
     setProperty(window, 'FlutterWebView', export);
 
@@ -82,12 +86,6 @@ class BlocklyEditor {
         'initial': initial ?? this.initial,
       },
     );
-
-    // final BlocklyEditor exportCounter =
-    //     createDartExport<BlocklyEditor>(_dartCounter) as BlocklyEditor;
-    // setProperty(globalThis, '_counter', exportCounter);
-
-    document.querySelector('.wrapper')?.classes.add('wrapper-active');
   }
 
   /// ## Example
@@ -108,10 +106,8 @@ class BlocklyEditor {
     }
   }
 
-  /// ## Example
-  /// ```dart
-  /// ```
-  void onMessage(message) {
+  /// It is called on message from the Web
+  void _onMessage(message) {
     try {
       final json = jsonDecode(message);
       switch (json['event']) {
@@ -178,14 +174,41 @@ class BlocklyEditor {
     return _state;
   }
 
-  /// Post message to the WebViewWidget
+  /// ## Example
+  /// ```dart
+  /// editor.htmlRender();
+  /// ```
+  void htmlRender({String? style, String? script, String? editor}) {
+    final Element? blocklyEditor = document.querySelector('#blocklyEditor');
+
+    if (blocklyEditor == null) {
+      document.body?.insertAdjacentHtml(
+        'beforeend',
+        editor ?? html.htmlEditor(classList: ['wrapper-web']),
+      );
+
+      final scriptElement = createWebTag(
+        tag: 'script',
+        content: html.htmlScript(script: script),
+      );
+      document.body?.insertAdjacentElement('beforeend', scriptElement);
+
+      final styleElement = createWebTag(
+        tag: 'style',
+        content: html.htmlStyle(style: style),
+      );
+      document.head?.insertAdjacentElement('beforeend', styleElement);
+    }
+  }
+
+  /// Post message to the Web
   Future<void> _postData({required String event, dynamic data}) async {
     try {
       callMethod<void>(
         window,
         'message',
         [
-          jsonEncode({'event': event, 'data': data})
+          jsonEncode({'event': event, 'data': data}),
         ],
       );
     } catch (err) {

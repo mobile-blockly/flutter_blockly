@@ -1,5 +1,5 @@
-/// The html script used for the WebViewWidget
-String htmlScript({String? script = ''}) {
+/// The html script
+String htmlScript({String? script}) {
   return '''
 <script>
   const onCallback = (event, data) => {
@@ -45,6 +45,7 @@ String htmlScript({String? script = ''}) {
       const workspace = Blockly.inject(element, params?.workspaceConfiguration);
 
       if (workspace) {
+        document.querySelector('.wrapper')?.classList.add('wrapper-active');
         _workspace = workspace;
         _toolboxConfig = params?.workspaceConfiguration?.toolbox || {contents: []};
         _readOnly = !!params?.workspaceConfiguration?.readOnly;
@@ -57,6 +58,7 @@ String htmlScript({String? script = ''}) {
 
     function dispose() {
       if (_workspace) {
+        document.querySelector('.wrapper')?.classList.remove('wrapper-active');
         _workspace.removeChangeListener(listener);
         _workspace.dispose();
         let _workspace = null;
@@ -168,7 +170,7 @@ String htmlScript({String? script = ''}) {
 
   window.message = handleEvent;
 
-  $script
+  ${script ?? ''}
 </script>
 ''';
 }
