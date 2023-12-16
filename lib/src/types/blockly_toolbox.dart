@@ -1,26 +1,6 @@
 import 'package:flutter/widgets.dart';
 
 @immutable
-class ToolboxInfo {
-  const ToolboxInfo({
-    required this.contents,
-    this.kind,
-  });
-
-  final List contents;
-  final String? kind;
-
-  ToolboxInfo.fromJson(Map<String, dynamic> data)
-      : contents = data['contents'],
-        kind = data['kind'];
-
-  Map<String, dynamic> toJson() => {
-        'contents': contents,
-        'kind': kind,
-      };
-}
-
-@immutable
 class BlockInfo {
   const BlockInfo({
     required this.kind,

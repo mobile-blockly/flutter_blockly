@@ -3,11 +3,10 @@ import 'dart:html';
 
 import 'package:js/js_util.dart';
 
-import './types/blockly_options.dart';
-import './types/blockly_toolbox.dart';
 import 'helpers/create_web_tag.dart';
 import 'helpers/flutter_web_view.dart';
 import 'html/html.dart' as html;
+import 'types/types.dart';
 
 /// The Flutter Blockly visual programming editor
 class BlocklyEditor {
