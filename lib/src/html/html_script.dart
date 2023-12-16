@@ -2,7 +2,6 @@
 String htmlScript({String? script = ''}) {
   return '''
 <script>
-window.onload = () => {
   const onCallback = (event, data) => {
     if (window.FlutterWebView) {
       const dataString = JSON.stringify({event, data});
@@ -156,8 +155,9 @@ window.onload = () => {
 
   const editor = BlocklyEditor();
 
-  function handleEvent({event, data}) {
+  function handleEvent(params) {
     try {
+      const {event, data} = typeof params === 'string' ? JSON.parse(params) : params;
       if (editor[event]) {
         editor[event](data);
       }
@@ -169,7 +169,6 @@ window.onload = () => {
   window.message = handleEvent;
 
   $script
-}
 </script>
 ''';
 }
