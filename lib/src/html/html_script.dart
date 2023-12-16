@@ -1,8 +1,7 @@
-/// The html script used for the WebViewWidget
-String htmlScript({String? script = ''}) {
+/// The html script
+String htmlScript({String? script}) {
   return '''
 <script>
-window.onload = () => {
   const onCallback = (event, data) => {
     if (window.FlutterWebView) {
       const dataString = JSON.stringify({event, data});
@@ -46,6 +45,7 @@ window.onload = () => {
       const workspace = Blockly.inject(element, params?.workspaceConfiguration);
 
       if (workspace) {
+        document.querySelector('.wrapper')?.classList.add('wrapper-active');
         _workspace = workspace;
         _toolboxConfig = params?.workspaceConfiguration?.toolbox || {contents: []};
         _readOnly = !!params?.workspaceConfiguration?.readOnly;
@@ -58,6 +58,7 @@ window.onload = () => {
 
     function dispose() {
       if (_workspace) {
+        document.querySelector('.wrapper')?.classList.remove('wrapper-active');
         _workspace.removeChangeListener(listener);
         _workspace.dispose();
         let _workspace = null;
@@ -156,8 +157,9 @@ window.onload = () => {
 
   const editor = BlocklyEditor();
 
-  function handleEvent({event, data}) {
+  function handleEvent(params) {
     try {
+      const {event, data} = typeof params === 'string' ? JSON.parse(params) : params;
       if (editor[event]) {
         editor[event](data);
       }
@@ -168,8 +170,7 @@ window.onload = () => {
 
   window.message = handleEvent;
 
-  $script
-}
+  ${script ?? ''}
 </script>
 ''';
 }

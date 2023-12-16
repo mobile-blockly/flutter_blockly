@@ -1,10 +1,13 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:html';
 
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:js/js_util.dart';
 
+import './types/blockly_options.dart';
+import './types/blockly_toolbox.dart';
+import 'helpers/create_web_tag.dart';
+import 'helpers/flutter_web_view.dart';
 import 'html/html.dart' as html;
-import 'types/types.dart';
 
 /// The Flutter Blockly visual programming editor
 class BlocklyEditor {
@@ -52,9 +55,6 @@ class BlocklyEditor {
   /// It is called on dispose editor
   final Function? onDispose;
 
-  /// The WebViewController used for the WebViewWidget
-  final WebViewController blocklyController = WebViewController();
-
   /// Create a default Blockly state
   BlocklyState _state = const BlocklyState();
 
@@ -65,21 +65,19 @@ class BlocklyEditor {
 
   /// ## Example
   /// ```dart
-  /// editor.blocklyController
-  ///   ..setNavigationDelegate(NavigationDelegate(
-  ///     onPageFinished: (url) {
-  ///       editor.init();
-  ///     },
-  ///   ));
+  /// editor.init();
   /// ```
   void init({Map<String, dynamic>? workspaceConfiguration, dynamic initial}) {
-    if (_toolboxConfig != null || (!Platform.isAndroid && !Platform.isIOS)) {
+    final Element? editor = document.querySelector('#blocklyEditor');
+    if (_toolboxConfig != null || editor == null) {
       return;
     }
 
-    _readOnly = workspaceConfiguration?['readOnly'] ??
-        this.workspaceConfiguration?['readOnly'] ??
-        false;
+    final webView = FlutterWebView();
+    webView.postMessage = _onMessage;
+    final export = createDartExport(webView);
+    setProperty(window, 'FlutterWebView', export);
+
     _postData(
       event: 'init',
       data: {
@@ -108,18 +106,10 @@ class BlocklyEditor {
     }
   }
 
-  /// It is called on message from the WebViewWidget
-  /// ## Example
-  /// ```dart
-  /// editor.blocklyController
-  ///   ..addJavaScriptChannel(
-  ///     'FlutterWebView',
-  ///     onMessageReceived: editor.onMessage,
-  ///   );
-  /// ```
-  void onMessage(e) {
+  /// It is called on message from the Web
+  void _onMessage(message) {
     try {
-      final json = jsonDecode(e.message);
+      final json = jsonDecode(message);
       switch (json['event']) {
         case 'onInject':
           _state = BlocklyState.fromJson(json['data']);
@@ -186,22 +176,40 @@ class BlocklyEditor {
 
   /// ## Example
   /// ```dart
-  /// editor.blocklyController
-  ///   ..loadHtmlString(editor.htmlRender());
+  /// editor.htmlRender();
   /// ```
-  String htmlRender({String? style, String? script, String? editor}) {
-    return html.htmlRender(
-      style: html.htmlStyle(style: style),
-      script: html.htmlScript(script: script),
-      editor: editor ?? html.htmlEditor(),
-    );
+  void htmlRender({String? style, String? script, String? editor}) {
+    final Element? blocklyEditor = document.querySelector('#blocklyEditor');
+
+    if (blocklyEditor == null) {
+      document.body?.insertAdjacentHtml(
+        'beforeend',
+        editor ?? html.htmlEditor(classList: ['wrapper-web']),
+      );
+
+      final scriptElement = createWebTag(
+        tag: 'script',
+        content: html.htmlScript(script: script),
+      );
+      document.body?.insertAdjacentElement('beforeend', scriptElement);
+
+      final styleElement = createWebTag(
+        tag: 'style',
+        content: html.htmlStyle(style: style),
+      );
+      document.head?.insertAdjacentElement('beforeend', styleElement);
+    }
   }
 
-  /// Post message to the WebViewWidget
+  /// Post message to the Web
   Future<void> _postData({required String event, dynamic data}) async {
     try {
-      await blocklyController.runJavaScript(
-        "window.message(${jsonEncode({'event': event, 'data': data})})",
+      callMethod<void>(
+        window,
+        'message',
+        [
+          jsonEncode({'event': event, 'data': data}),
+        ],
       );
     } catch (err) {
       _onCallback(cb: onError, arg: err);

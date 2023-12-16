@@ -1,5 +1,9 @@
 /// The html render used for the WebViewWidget
-String htmlRender({String style = '', String script = ''}) {
+String htmlRender({
+  required String editor,
+  required String script,
+  required String style,
+}) {
   return '''
 <html>
 <head>
@@ -8,9 +12,7 @@ String htmlRender({String style = '', String script = ''}) {
 $style
 </head>
 <body>
-  <div class='wrapper'>
-    <div id='blocklyEditor' class='wrap-container'></div>
-  </div>
+  $editor
   $script
   <script src='https://unpkg.com/blockly/blockly.min.js' defer></script>
 </body>
