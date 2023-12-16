@@ -39,7 +39,24 @@ return Scaffold(
 );
 }
 ```
+
+for it to work for web browsers, you must add\
+`blockly.min.js` in [web/index.html](https://github.com/SerSerch/flutter_blockly/blob/main/example/web/index.html)
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- ...... -->
+</head>
+<body>
+  <!-- ...... -->
   
+  <!-- here -->
+  <script src='https://unpkg.com/blockly/blockly.min.js' defer></script>
+</body>
+</html>
+```
+
 </details>
 
 or if you want to use additional methods, see how it's implemented here
