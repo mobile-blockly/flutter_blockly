@@ -29,6 +29,22 @@ String htmlScript({String? script}) {
       return false;
     }
   };
+  
+  function nullToUndefined(data) {
+    if (data === null) {
+      return;
+    } else if (Array.isArray(data)) {
+      return data.map(nullToUndefined);
+    } else if (typeof data === 'object') {
+      const tempObj = {};
+      Object.keys(data).forEach(key => {
+        tempObj[key] = nullToUndefined(data[key]);
+      });
+      return tempObj;
+    } else {
+      return data;
+    }
+  }
 
   const BlocklyEditor = () => {
     let _workspace = null;
@@ -161,7 +177,7 @@ String htmlScript({String? script}) {
     try {
       const {event, data} = typeof params === 'string' ? JSON.parse(params) : params;
       if (editor[event]) {
-        editor[event](data);
+        editor[event](nullToUndefined(data));
       }
     } catch (err) {
       onCallback('onError', err?.toString());
