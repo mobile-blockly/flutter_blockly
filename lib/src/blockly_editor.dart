@@ -35,9 +35,9 @@ class BlocklyEditor {
   });
 
   /// [BlocklyOptions interface](https://developers.google.com/blockly/reference/js/blockly.blocklyoptions_interface)
-  final Map<String, dynamic>? workspaceConfiguration;
+  final BlocklyOptions? workspaceConfiguration;
 
-  /// Initial state of Blockly editor (string or json)
+  /// Initial state of Blockly editor (xml string or json)
   final dynamic initial;
 
   /// It is called on any error
@@ -72,13 +72,13 @@ class BlocklyEditor {
   ///     },
   ///   ));
   /// ```
-  void init({Map<String, dynamic>? workspaceConfiguration, dynamic initial}) {
+  void init({BlocklyOptions? workspaceConfiguration, dynamic initial}) {
     if (_toolboxConfig != null || (!Platform.isAndroid && !Platform.isIOS)) {
       return;
     }
 
-    _readOnly = workspaceConfiguration?['readOnly'] ??
-        this.workspaceConfiguration?['readOnly'] ??
+    _readOnly = workspaceConfiguration?.readOnly ??
+        this.workspaceConfiguration?.readOnly ??
         false;
     _postData(
       event: 'init',
@@ -168,10 +168,10 @@ class BlocklyEditor {
   ///   return newStateJson;
   /// });
   /// ```
-  void updateState(Map<String, dynamic> Function(BlocklyState) cb) {
+  void updateState(BlocklyJsonState Function(BlocklyState) cb) {
     try {
       if (_toolboxConfig != null) {
-        Map<String, dynamic> newState = cb(_state);
+        BlocklyJsonState newState = cb(_state);
         _postData(event: 'updateState', data: newState);
       }
     } catch (err) {

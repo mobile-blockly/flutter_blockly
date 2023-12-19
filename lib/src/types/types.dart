@@ -3,6 +3,7 @@ export 'blockly_category_style.dart';
 export 'blockly_component_style.dart';
 export 'blockly_font_style.dart';
 export 'blockly_grid.dart';
+export 'blockly_json_state.dart';
 export 'blockly_move.dart';
 export 'blockly_options.dart';
 export 'blockly_scrollbar.dart';

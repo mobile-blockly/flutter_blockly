@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'blockly_editor.dart';
+import 'types/types.dart';
 
 /// The Flutter Blockly widget visual programming editor
 class BlocklyEditorWidget extends StatefulWidget {
@@ -34,9 +35,9 @@ class BlocklyEditorWidget extends StatefulWidget {
   });
 
   /// [BlocklyOptions interface](https://developers.google.com/blockly/reference/js/blockly.blocklyoptions_interface)
-  final Map<String, dynamic>? workspaceConfiguration;
+  final BlocklyOptions? workspaceConfiguration;
 
-  /// Blockly initial state (string or json)
+  /// Blockly initial state (xml string or json)
   final dynamic initial;
 
   /// It is called on any error
