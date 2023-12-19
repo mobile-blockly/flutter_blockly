@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 
-/// Blockly state
+/// BlocklyState
 @immutable
 class BlocklyState {
-  /// Blockly state constructor
+  /// BlocklyState constructor
   const BlocklyState({
     this.xml = '<xml xmlns="https://developers.google.com/blockly/xml"></xml>',
     this.json = const {},
