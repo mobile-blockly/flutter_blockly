@@ -1,7 +1,14 @@
 import 'package:flutter/widgets.dart';
 
+import 'blockly_block_style.dart';
+import 'blockly_category_style.dart';
+import 'blockly_component_style.dart';
+import 'blockly_font_style.dart';
+
+/// Theme interface
 @immutable
 class Theme {
+  /// Theme constructor
   const Theme({
     required this.name,
     this.blockStyles,
@@ -12,133 +19,64 @@ class Theme {
     this.base,
   });
 
+  /// Theme.name property
   final String name;
-  final Map<String, BlockStyle>? blockStyles;
-  final Map<String, CategoryStyle>? categoryStyles;
-  final ComponentStyle? componentStyles;
-  final FontStyle? fontStyle;
+
+  /// Theme.blockStyles property
+  final Map<String, BlocklyBlockStyle>? blockStyles;
+
+  /// Theme.categoryStyles property
+  final Map<String, BlocklyCategoryStyle>? categoryStyles;
+
+  /// Theme.componentStyles property
+  final BlocklyComponentStyle? componentStyles;
+
+  /// Theme.fontStyle property
+  final BlocklyFontStyle? fontStyle;
+
+  /// Theme.startHats property
   final bool? startHats;
+
+  /// Theme.base property
   final Theme? base;
 
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'blockStyles': blockStyles,
-        'categoryStyles': categoryStyles,
-        'componentStyles': componentStyles,
-        'fontStyle': fontStyle,
-        'startHats': startHats,
-        'base': base,
-      };
-}
+  /// isNotEmpty method
+  bool isNotEmpty() {
+    return blockStyles != null ||
+        categoryStyles != null ||
+        componentStyles != null ||
+        fontStyle != null ||
+        startHats != null ||
+        base != null;
+  }
 
-@immutable
-class BlockStyle {
-  const BlockStyle({
-    required this.colourPrimary,
-    required this.colourSecondary,
-    required this.colourTertiary,
-    required this.hat,
-  });
+  /// isEmpty method
+  bool isEmpty() {
+    return !isNotEmpty();
+  }
 
-  final String colourPrimary;
-  final String colourSecondary;
-  final String colourTertiary;
-  final String hat;
+  /// jsonEncode
+  Map<String, dynamic>? toJson() {
+    return isNotEmpty()
+        ? {
+            'name': name,
+            'blockStyles': blockStyles,
+            'categoryStyles': categoryStyles,
+            'componentStyles': componentStyles,
+            'fontStyle': fontStyle,
+            'startHats': startHats,
+            'base': base,
+          }
+        : null;
+  }
 
-  Map<String, dynamic> toJson() => {
-        'colourPrimary': colourPrimary,
-        'colourSecondary': colourSecondary,
-        'colourTertiary': colourTertiary,
-        'hat': hat,
-      };
-}
-
-@immutable
-class CategoryStyle {
-  const CategoryStyle({
-    required this.colour,
-  });
-
-  final String colour;
-
-  Map<String, dynamic> toJson() => {
-        'colour': colour,
-      };
-}
-
-@immutable
-class ComponentStyle {
-  const ComponentStyle({
-    this.workspaceBackgroundColour,
-    this.toolboxBackgroundColour,
-    this.toolboxForegroundColour,
-    this.flyoutBackgroundColour,
-    this.flyoutForegroundColour,
-    this.flyoutOpacity,
-    this.scrollbarColour,
-    this.scrollbarOpacity,
-    this.insertionMarkerColour,
-    this.insertionMarkerOpacity,
-    this.markerColour,
-    this.cursorColour,
-    this.selectedGlowColour,
-    this.selectedGlowOpacity,
-    this.replacementGlowColour,
-    this.replacementGlowOpacity,
-  });
-
-  final String? workspaceBackgroundColour;
-  final String? toolboxBackgroundColour;
-  final String? toolboxForegroundColour;
-  final String? flyoutBackgroundColour;
-  final String? flyoutForegroundColour;
-  final num? flyoutOpacity;
-  final String? scrollbarColour;
-  final num? scrollbarOpacity;
-  final String? insertionMarkerColour;
-  final num? insertionMarkerOpacity;
-  final String? markerColour;
-  final String? cursorColour;
-  final String? selectedGlowColour;
-  final num? selectedGlowOpacity;
-  final String? replacementGlowColour;
-  final num? replacementGlowOpacity;
-
-  Map<String, dynamic> toJson() => {
-        'workspaceBackgroundColour': workspaceBackgroundColour,
-        'toolboxBackgroundColour': toolboxBackgroundColour,
-        'toolboxForegroundColour': toolboxForegroundColour,
-        'flyoutBackgroundColour': flyoutBackgroundColour,
-        'flyoutForegroundColour': flyoutForegroundColour,
-        'flyoutOpacity': flyoutOpacity,
-        'scrollbarColour': scrollbarColour,
-        'scrollbarOpacity': scrollbarOpacity,
-        'insertionMarkerColour': insertionMarkerColour,
-        'insertionMarkerOpacity': insertionMarkerOpacity,
-        'markerColour': markerColour,
-        'cursorColour': cursorColour,
-        'selectedGlowColour': selectedGlowColour,
-        'selectedGlowOpacity': selectedGlowOpacity,
-        'replacementGlowColour': replacementGlowColour,
-        'replacementGlowOpacity': replacementGlowOpacity,
-      };
-}
-
-@immutable
-class FontStyle {
-  const FontStyle({
-    this.family,
-    this.weight,
-    this.size,
-  });
-
-  final String? family;
-  final String? weight;
-  final num? size;
-
-  Map<String, dynamic> toJson() => {
-        'family': family,
-        'weight': weight,
-        'size': size,
-      };
+  /// Theme from json
+  Theme.fromJson(Map<String, dynamic>? data)
+      : name = data?['name'] ?? '',
+        blockStyles = data?['blockStyles'],
+        categoryStyles = data?['categoryStyles'],
+        componentStyles = data?['componentStyles'],
+        fontStyle = data?['fontStyle'],
+        startHats = data?['startHats'],
+        base = data?['base'];
 }

@@ -1,2 +1,12 @@
+export 'blockly_block_style.dart';
+export 'blockly_category_style.dart';
+export 'blockly_component_style.dart';
+export 'blockly_font_style.dart';
+export 'blockly_grid.dart';
+export 'blockly_move.dart';
+export 'blockly_options.dart';
+export 'blockly_scrollbar.dart';
 export 'blockly_state.dart';
-export 'blockly_toolbox_info.dart';
+export 'blockly_theme.dart';
+export 'blockly_toolbox.dart';
+export 'blockly_zoom.dart';
