@@ -29,6 +29,22 @@ String htmlScript({String? script}) {
       return false;
     }
   };
+  
+  function nullToUndefined(data, defaultData) {
+    if (data === null || typeof data === 'undefined') {
+      return defaultData;
+    } else if (Array.isArray(data)) {
+      return data.map(item => nullToUndefined(item, defaultData?.[0]));
+    } else if (typeof data === 'object') {
+      const tempObj = {};
+      for (let key in data) {
+        tempObj[key] = nullToUndefined(data[key], defaultData?.[key]);
+      }
+      return tempObj;
+    } else {
+      return data;
+    }
+  }
 
   const BlocklyEditor = () => {
     let _workspace = null;
@@ -42,7 +58,10 @@ String htmlScript({String? script}) {
         return;
       }
 
-      const workspace = Blockly.inject(element, params?.workspaceConfiguration);
+      const workspace = Blockly.inject(
+        element,
+        nullToUndefined(params?.workspaceConfiguration),
+      );
 
       if (workspace) {
         document.querySelector('.wrapper')?.classList.add('wrapper-active');
