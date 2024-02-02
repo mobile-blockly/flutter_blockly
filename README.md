@@ -38,6 +38,9 @@ return Scaffold(
   ),
 );
 }
+
+void onChange({xml, json, dart, js, lua, php, python}) {
+}
 ```
 
 for it to work for web browsers, you must add\
@@ -53,6 +56,13 @@ for it to work for web browsers, you must add\
   
   <!-- here -->
   <script src='https://unpkg.com/blockly/blockly.min.js' defer></script>
+
+  <!-- code generation -->
+  <script src="https://unpkg.com/blockly/javascript_compressed" defer></script>
+  <script src="https://unpkg.com/blockly/python_compressed" defer></script>
+  <script src="https://unpkg.com/blockly/php_compressed" defer></script>
+  <script src="https://unpkg.com/blockly/lua_compressed" defer></script>
+  <script src="https://unpkg.com/blockly/dart_compressed" defer></script>
 </body>
 </html>
 ```
@@ -94,7 +104,9 @@ class _MyWidgetState extends State<MyWidgetState> {
     // editor.htmlRender();
     // editor.updateToolboxConfig();
     // editor.updateState();
+    // editor.postData();
     // editor.state();
+    // editor.code();
     // editor.blocklyController;
   }
 }
@@ -133,7 +145,9 @@ class _MyWidgetState extends State<MyWidgetState> {
     // editor.htmlRender();
     // editor.updateToolboxConfig();
     // editor.updateState();
+    // editor.postData();
     // editor.state();
+    // editor.code();
   }
 }
 ```
