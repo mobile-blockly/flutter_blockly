@@ -43,15 +43,31 @@ class BlocklyEditor {
   final dynamic initial;
 
   /// It is called on any error
+  /// ## Example
+  /// ```dart
+  /// void onError(dynamic error) {}
+  /// ```
   final Function? onError;
 
   /// It is called on inject editor
+  /// ## Example
+  /// ```dart
+  /// void onInject(BlocklyData data) {}
+  /// ```
   final Function? onInject;
 
   /// It is called on change editor sate
+  /// ## Example
+  /// ```dart
+  /// void onChange(BlocklyData data) {}
+  /// ```
   final Function? onChange;
 
   /// It is called on dispose editor
+  /// ## Example
+  /// ```dart
+  /// void onDispose(BlocklyData data) {}
+  /// ```
   final Function? onDispose;
 
   /// Create a default Blockly state
@@ -61,6 +77,9 @@ class BlocklyEditor {
   ToolboxInfo? _toolboxConfig;
 
   bool _readOnly = false;
+
+  /// code
+  BlocklyCode _code = const BlocklyCode();
 
   /// ## Example
   /// ```dart
@@ -77,7 +96,7 @@ class BlocklyEditor {
     final export = createDartExport(webView);
     setProperty(window, 'FlutterWebView', export);
 
-    _postData(
+    postData(
       event: 'init',
       data: {
         'workspaceConfiguration':
@@ -97,8 +116,8 @@ class BlocklyEditor {
   /// ```
   void dispose() {
     if (_toolboxConfig != null) {
-      _postData(event: 'dispose');
-      _onCallback(cb: onDispose, arg: _state);
+      postData(event: 'dispose');
+      _onCallback(cb: onDispose, arg: _getData());
       _state = const BlocklyState();
       _toolboxConfig = null;
       _readOnly = false;
@@ -112,11 +131,12 @@ class BlocklyEditor {
       switch (json['event']) {
         case 'onInject':
           _state = BlocklyState.fromJson(json['data']);
-          _onCallback(cb: onInject, arg: _state);
+          _onCallback(cb: onInject, arg: _getData());
           break;
         case 'onChange':
           _state = BlocklyState.fromJson(json['data']);
-          _onCallback(cb: onChange, arg: _state);
+          _code = BlocklyCode.fromJson(json['data']);
+          _onCallback(cb: onChange, arg: _getData());
           break;
         case 'onError':
           _onCallback(cb: onError, arg: json['data']);
@@ -142,7 +162,7 @@ class BlocklyEditor {
       if (_toolboxConfig != null) {
         ToolboxInfo configuration = cb(_toolboxConfig!);
         if (!_readOnly) {
-          _postData(event: 'updateToolboxConfig', data: configuration);
+          postData(event: 'updateToolboxConfig', data: configuration);
         }
       }
     } catch (err) {
@@ -161,7 +181,7 @@ class BlocklyEditor {
     try {
       if (_toolboxConfig != null) {
         BlocklyJsonState newState = cb(_state);
-        _postData(event: 'updateState', data: newState);
+        postData(event: 'updateState', data: newState);
       }
     } catch (err) {
       _onCallback(cb: onError, arg: err);
@@ -169,15 +189,32 @@ class BlocklyEditor {
   }
 
   /// Get the current state
+  /// ## Example
+  /// ```dart
+  /// editor.state();
+  /// ```
   BlocklyState state() {
     return _state;
+  }
+
+  /// Get the current code
+  /// ## Example
+  /// ```dart
+  /// editor.code();
+  /// ```
+  BlocklyCode code() {
+    return _code;
   }
 
   /// ## Example
   /// ```dart
   /// editor.htmlRender();
   /// ```
-  void htmlRender({String? style, String? script, String? editor}) {
+  void htmlRender({
+    String? style,
+    String? script,
+    String? editor,
+  }) {
     final Element? blocklyEditor = document.querySelector('#blocklyEditor');
 
     if (blocklyEditor == null) {
@@ -201,7 +238,11 @@ class BlocklyEditor {
   }
 
   /// Post message to the Web
-  Future<void> _postData({required String event, dynamic data}) async {
+  /// ## Example
+  /// ```dart
+  /// editor.postData(event: 'init', data: {});
+  /// ```
+  Future<void> postData({required String event, dynamic data}) async {
     try {
       callMethod<void>(
         window,
@@ -213,6 +254,13 @@ class BlocklyEditor {
     } catch (err) {
       _onCallback(cb: onError, arg: err);
     }
+  }
+
+  /// get state and code
+  _getData() {
+    final data = _state.toJson();
+    data?.addAll(_code.toJson() ?? {});
+    return BlocklyData.fromJson(data);
   }
 
   void _onCallback({Function? cb, dynamic arg}) {

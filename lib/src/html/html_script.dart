@@ -51,6 +51,13 @@ String htmlScript({String? script}) {
     let _toolboxConfig = null;
     let _state = BlocklyState();
     let _readOnly = false;
+    let _code = {
+      dart: '',
+      js: '',
+      lua: '',
+      php: '',
+      python: '',
+    };
 
     function init(params) {
       const element = document.querySelector('#blocklyEditor');
@@ -69,7 +76,7 @@ String htmlScript({String? script}) {
         _toolboxConfig = params?.workspaceConfiguration?.toolbox || {contents: []};
         _readOnly = !!params?.workspaceConfiguration?.readOnly;
         onCallback('toolboxConfig', _toolboxConfig);
-        onCallback('onInject', _state);
+        onCallback('onInject', _getData());
         _setState(params?.initial);
         _workspace.addChangeListener(listener);
       }
@@ -123,6 +130,10 @@ String htmlScript({String? script}) {
       return _state;
     }
 
+    function code() {
+      return _code;
+    }
+
     function BlocklyState({xml, json} = {}) {
       return {
         xml: xml || '<xml xmlns="https://developers.google.com/blockly/xml"></xml>',
@@ -152,8 +163,8 @@ String htmlScript({String? script}) {
               xml: newXml,
               json: Blockly.serialization.workspaces.save(_workspace),
             });
-
-            onCallback('onChange', _state);
+            _saveCode()
+            onCallback('onChange', _getData());
             return true;
           }
         }
@@ -164,11 +175,29 @@ String htmlScript({String? script}) {
       }
     }
 
+    function _saveCode() {
+      if (_workspace) {
+        if(window.dart) _code.dart = dart.dartGenerator?.workspaceToCode(_workspace);
+        if(window.javascript) _code.js = javascript.javascriptGenerator?.workspaceToCode(_workspace);
+        if(window.lua) _code.lua = lua.luaGenerator?.workspaceToCode(_workspace);
+        if(window.php) _code.php = php.phpGenerator?.workspaceToCode(_workspace);
+        if(window.python) _code.python = python.pythonGenerator?.workspaceToCode(_workspace);
+      }
+    }
+
+    function _getData() {
+      return {
+        ..._state,
+        ..._code,
+      };
+    }
+
     return {
       workspace: _workspace,
       init,
       dispose,
       state,
+      code,
       updateToolboxConfig,
       updateState,
     };

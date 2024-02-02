@@ -1,6 +1,8 @@
 export 'blockly_block_style.dart';
 export 'blockly_category_style.dart';
+export 'blockly_code.dart';
 export 'blockly_component_style.dart';
+export 'blockly_data.dart';
 export 'blockly_font_style.dart';
 export 'blockly_grid.dart';
 export 'blockly_json_state.dart';
