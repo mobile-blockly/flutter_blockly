@@ -67,16 +67,16 @@ class _WebViewAppState extends State<WebViewApp> {
     'parentWorkspace': null,
   });
 
-  void onInject(state) {
-    debugPrint('onInject: ${state.xml}\n${jsonEncode(state.json)}');
+  void onInject(BlocklyData data) {
+    debugPrint('onInject: ${data.xml}\n${jsonEncode(data.json)}');
   }
 
-  void onChange(state) {
-    debugPrint('onChange: ${state.xml}\n${jsonEncode(state.json)}');
+  void onChange(BlocklyData data) {
+    debugPrint('onChange: ${data.xml}\n${jsonEncode(data.json)}\n${data.dart}');
   }
 
-  void onDispose(state) {
-    debugPrint('onDispose: ${state.xml}\n${jsonEncode(state.json)}');
+  void onDispose(BlocklyData data) {
+    debugPrint('onDispose: ${data.xml}\n${jsonEncode(data.json)}');
   }
 
   void onError(dynamic err) {
