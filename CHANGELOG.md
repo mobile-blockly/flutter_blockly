@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.3.0 (2024-01-02)
+
+* add BlocklyCode
+* add BlocklyData
+
 # 1.2.0 (2023-12-19)
 
 * add Blockly types
