@@ -140,7 +140,7 @@ class BlocklyEditor {
   ///     onMessageReceived: editor.onMessage,
   ///   );
   /// ```
-  void onMessage(e) {
+  void onMessage(JavaScriptMessage e) {
     try {
       final json = jsonDecode(e.message);
       switch (json['event']) {
@@ -243,7 +243,7 @@ class BlocklyEditor {
   /// Post message to the WebViewWidget
   /// ## Example
   /// ```dart
-  /// editor.postData(event: 'init', data: {});
+  /// editor.postData(event: 'eval', data: 'alert(editor.state().xml)');
   /// ```
   Future<void> postData({required String event, dynamic data}) async {
     try {
@@ -253,6 +253,15 @@ class BlocklyEditor {
     } catch (err) {
       _onCallback(cb: onError, arg: err);
     }
+  }
+
+  /// run javascript in WebView
+  /// ## Example
+  /// ```dart
+  /// editor.runJS('alert(editor.state().xml)');
+  /// ```
+  void runJS(String code) {
+    postData(event: 'eval', data: code);
   }
 
   /// get state and code

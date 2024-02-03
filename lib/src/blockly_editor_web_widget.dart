@@ -70,7 +70,13 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
       onInject: widget.onInject,
       onChange: widget.onChange,
       onDispose: widget.onDispose,
-    )
+    );
+
+    editor
+      ..addJavaScriptChannel(
+        'FlutterWebView',
+        onMessageReceived: editor.onMessage,
+      )
       ..htmlRender()
       ..init();
   }
