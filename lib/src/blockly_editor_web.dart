@@ -85,17 +85,15 @@ class BlocklyEditor {
   /// ```dart
   /// editor.init();
   /// ```
-  void init({Map<String, dynamic>? workspaceConfiguration, dynamic initial}) {
+  void init({BlocklyOptions? workspaceConfiguration, dynamic initial}) {
     final Element? editor = document.querySelector('#blocklyEditor');
     if (_toolboxConfig != null || editor == null) {
       return;
     }
 
-    final webView = FlutterWebView();
-    webView.postMessage = _onMessage;
-    final export = createDartExport(webView);
-    setProperty(window, 'FlutterWebView', export);
-
+    _readOnly = workspaceConfiguration?.readOnly ??
+        this.workspaceConfiguration?.readOnly ??
+        false;
     postData(
       event: 'init',
       data: {
@@ -124,8 +122,35 @@ class BlocklyEditor {
     }
   }
 
-  /// It is called on message from the Web
-  void _onMessage(message) {
+  /// Adds a new javascript chanel
+  /// ## Example
+  /// ```dart
+  /// editor
+  ///   ..addJavaScriptChannel(
+  ///     'FlutterWebView',
+  ///     onMessageReceived: editor.onMessage,
+  ///   );
+  /// ```
+  void addJavaScriptChannel(
+    String name, {
+    required void Function(String message) onMessageReceived,
+  }) {
+    final webView = FlutterWebView();
+    webView.postMessage = onMessageReceived;
+    final export = createDartExport(webView);
+    setProperty(window, name, export);
+  }
+
+  /// It is called on message from the WebViewWidget
+  /// ## Example
+  /// ```dart
+  /// editor
+  ///   ..addJavaScriptChannel(
+  ///     'FlutterWebView',
+  ///     onMessageReceived: editor.onMessage,
+  ///   );
+  /// ```
+  void onMessage(String message) {
     try {
       final json = jsonDecode(message);
       switch (json['event']) {
@@ -240,7 +265,7 @@ class BlocklyEditor {
   /// Post message to the Web
   /// ## Example
   /// ```dart
-  /// editor.postData(event: 'init', data: {});
+  /// editor.postData(event: 'eval', data: 'alert(editor.state().xml)');
   /// ```
   Future<void> postData({required String event, dynamic data}) async {
     try {
@@ -254,6 +279,15 @@ class BlocklyEditor {
     } catch (err) {
       _onCallback(cb: onError, arg: err);
     }
+  }
+
+  /// run javascript in WebView
+  /// ## Example
+  /// ```dart
+  /// editor.runJS('alert(editor.state().xml)');
+  /// ```
+  void runJS(String code) {
+    postData(event: 'eval', data: code);
   }
 
   /// get state and code

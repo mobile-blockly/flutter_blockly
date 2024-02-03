@@ -205,11 +205,23 @@ String htmlScript({String? script}) {
 
   const editor = BlocklyEditor();
 
+  const events = {
+    eval: function (data) {
+      try {
+        eval(data);
+      } catch (err) {
+        onCallback('onError', err?.toString());
+      }
+    },
+  };
+
   function handleEvent(params) {
     try {
       const {event, data} = typeof params === 'string' ? JSON.parse(params) : params;
       if (editor[event]) {
         editor[event](data);
+      } else if (events[event]) {
+        events[event](data);
       }
     } catch (err) {
       onCallback('onError', err?.toString());

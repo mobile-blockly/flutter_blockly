@@ -2,10 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.4.0 (2024-02-03)
+
+* add js eval event
+* add runJS method
+* add web addJavaScriptChannel method
+* add web onMessage method
+
 # 1.3.0 (2024-02-02)
 
 * add BlocklyCode
 * add BlocklyData
+* add postData method
 
 # 1.2.0 (2023-12-19)
 
