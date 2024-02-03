@@ -105,6 +105,7 @@ class _MyWidgetState extends State<MyWidgetState> {
     // editor.updateToolboxConfig();
     // editor.updateState();
     // editor.postData();
+    // editor.runJS();
     // editor.state();
     // editor.code();
     // editor.blocklyController;
@@ -142,10 +143,13 @@ class _MyWidgetState extends State<MyWidgetState> {
     // then you will have methods:
     // editor.init();
     // editor.dispose();
+    // editor.addJavaScriptChannel();
+    // editor.onMessage();
     // editor.htmlRender();
     // editor.updateToolboxConfig();
     // editor.updateState();
     // editor.postData();
+    // editor.runJS();
     // editor.state();
     // editor.code();
   }
