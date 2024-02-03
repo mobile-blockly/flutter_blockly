@@ -6,7 +6,6 @@ All notable changes to this project will be documented in this file.
 
 * add js eval event
 * add runJS method
-* add postData method
 * add web addJavaScriptChannel method
 * add web onMessage method
 
@@ -14,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 * add BlocklyCode
 * add BlocklyData
+* add postData method
 
 # 1.2.0 (2023-12-19)
 
