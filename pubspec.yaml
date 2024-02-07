@@ -3,7 +3,7 @@ description: A Flutter Blockly visual programming editor. The Blockly library ad
 repository: https://github.com/SerSerch/flutter_blockly
 homepage: https://github.com/SerSerch/flutter_blockly
 issue_tracker: https://github.com/SerSerch/flutter_blockly/issues
-version: 1.4.0
+version: 1.4.1
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -12,8 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  webview_flutter: ^4.4.2
-  js: ^0.6.7
+  webview_flutter: ^4.5.0
+  js: ^0.7.0
 
 dev_dependencies:
   flutter_test:
