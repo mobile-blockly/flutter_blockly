@@ -1,6 +1,7 @@
 # flutter_blockly
 
 [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
+[![StandWithUkraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 <br/>
 [![pub version](https://img.shields.io/pub/v/flutter_blockly.svg)](https://pub.dev/packages/flutter_blockly)
 
