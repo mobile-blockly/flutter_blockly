@@ -1,9 +1,17 @@
-const String initialXml = '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="text" x="70" y="30"><field name="TEXT">XML</field></block></xml>';
+const String initialXml =
+    '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="text" x="70" y="30"><field name="TEXT">XML</field></block></xml>';
 
 const Map<String, dynamic> initialJson = {
   'blocks': {
     'languageVersion': 0,
-    'blocks': [{ 'type': 'text', 'x': 70, 'y': 30, 'fields': { 'TEXT': 'JSON' } }],
+    'blocks': [
+      {
+        'type': 'text',
+        'x': 70,
+        'y': 30,
+        'fields': {'TEXT': 'JSON'}
+      }
+    ],
   },
 };
 
@@ -11,8 +19,18 @@ const Map<String, dynamic> newState = {
   'blocks': {
     'languageVersion': 0,
     'blocks': [
-      { 'type': 'text', 'x': 70, 'y': 30, 'fields': { 'TEXT': 'JSON' } },
-      { 'type': 'text', 'x': 70, 'y': 70, 'fields': { 'TEXT': 'NEW' } },
+      {
+        'type': 'text',
+        'x': 70,
+        'y': 30,
+        'fields': {'TEXT': 'JSON'}
+      },
+      {
+        'type': 'text',
+        'x': 70,
+        'y': 70,
+        'fields': {'TEXT': 'NEW'}
+      },
     ],
   },
 };
@@ -32,12 +50,12 @@ const Map<String, dynamic> initialToolboxJson = {
         {
           'kind': 'block',
           'blockxml':
-            '<block type="logic_compare"><field name="OP">EQ</field></block>',
+              '<block type="logic_compare"><field name="OP">EQ</field></block>',
         },
         {
           'kind': 'block',
           'blockxml':
-            '<block type="logic_operation"><field name="OP">AND</field></block>',
+              '<block type="logic_operation"><field name="OP">AND</field></block>',
         },
         {
           'kind': 'block',
@@ -46,7 +64,7 @@ const Map<String, dynamic> initialToolboxJson = {
         {
           'kind': 'block',
           'blockxml':
-            '<block type="logic_boolean"><field name="BOOL">TRUE</field></block>',
+              '<block type="logic_boolean"><field name="BOOL">TRUE</field></block>',
         },
         {
           'kind': 'block',
@@ -80,7 +98,7 @@ const Map<String, dynamic> initialToolboxJson = {
           'blockxml': '''
                 <block type="controls_whileUntil">
                   <field name="MODE">WHILE</field>
-                </block>',
+                </block>
             '''
         },
         {
@@ -633,7 +651,7 @@ const Map<String, dynamic> initialToolboxJson = {
         },
       ],
     },
-    { 'kind': 'sep' },
+    {'kind': 'sep'},
     {
       'kind': 'category',
       'name': 'Custom Button',
@@ -1026,7 +1044,7 @@ const List<Map<String, dynamic>> initialToolboxCategories = [
   {
     'name': 'Controls',
     'blocks': [
-      { 'type': 'controls_if' },
+      {'type': 'controls_if'},
       {
         'type': 'controls_repeat_ext',
         'values': {
@@ -1059,7 +1077,7 @@ const List<Map<String, dynamic>> initialToolboxCategories = [
   {
     'name': 'Text',
     'blocks': [
-      { 'type': 'text' },
+      {'type': 'text'},
       {
         'type': 'text_print',
         'values': {
