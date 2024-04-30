@@ -11,7 +11,7 @@
 
 </details>
 
-## [Change Log](https://github.com/react-blockly/flutter_blockly/blob/main/CHANGELOG.md).
+## [Change Log](https://github.com/mobile-blockly/flutter_blockly/blob/main/CHANGELOG.md).
 
 ## Usage
 
@@ -45,7 +45,7 @@ void onChange({xml, json, dart, js, lua, php, python}) {
 ```
 
 for it to work for web browsers, you must add\
-`blockly.min.js` in [web/index.html](https://github.com/react-blockly/flutter_blockly/blob/main/example/web/index.html)
+`blockly.min.js` in [web/index.html](https://github.com/mobile-blockly/flutter_blockly/blob/main/example/web/index.html)
 ```html
 <!DOCTYPE html>
 <html>
@@ -72,7 +72,7 @@ for it to work for web browsers, you must add\
 
 or if you want to use additional methods, see how it's implemented here
 <br><br>
-IOS and Android [BlocklyEditorWidget](https://github.com/react-blockly/flutter_blockly/blob/main/lib/src/blockly_editor_widget.dart)
+IOS and Android [BlocklyEditorWidget](https://github.com/mobile-blockly/flutter_blockly/blob/main/lib/src/blockly_editor_widget.dart)
 
 <details><summary>Click to see the code</summary>
 
@@ -116,7 +116,7 @@ class _MyWidgetState extends State<MyWidgetState> {
 
 </details>
 
-Web [BlocklyEditorWidget](https://github.com/react-blockly/flutter_blockly/blob/main/lib/src/blockly_editor_web_widget.dart)
+Web [BlocklyEditorWidget](https://github.com/mobile-blockly/flutter_blockly/blob/main/lib/src/blockly_editor_web_widget.dart)
 
 <details><summary>Click to see the code</summary>
 
@@ -161,7 +161,7 @@ class _MyWidgetState extends State<MyWidgetState> {
 
 ## Example
 
-[flutter_blockly_example](https://github.com/react-blockly/flutter_blockly/blob/main/example)
+[flutter_blockly_example](https://github.com/mobile-blockly/flutter_blockly/blob/main/example)
 
 ## License
 
