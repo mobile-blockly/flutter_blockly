@@ -32,6 +32,10 @@ class BlocklyEditorWidget extends StatefulWidget {
     this.onInject,
     this.onChange,
     this.onDispose,
+    this.style,
+    this.script,
+    this.editor,
+    this.packages,
   });
 
   /// [BlocklyOptions interface](https://developers.google.com/blockly/reference/js/blockly.blocklyoptions_interface)
@@ -51,6 +55,18 @@ class BlocklyEditorWidget extends StatefulWidget {
 
   /// It is called on dispose editor
   final Function? onDispose;
+
+  /// html render style
+  final String? style;
+
+  /// html render script
+  final String? script;
+
+  /// html render editor
+  final String? editor;
+
+  /// html render packages
+  final String? packages;
 
   @override
   State<BlocklyEditorWidget> createState() => _BlocklyEditorWidgetState();
@@ -87,7 +103,14 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
         'FlutterWebView',
         onMessageReceived: editor.onMessage,
       )
-      ..loadHtmlString(editor.htmlRender());
+      ..loadHtmlString(
+        editor.htmlRender(
+          style: widget.style,
+          script: widget.script,
+          editor: widget.editor,
+          packages: widget.packages,
+        ),
+      );
   }
 
   @override
