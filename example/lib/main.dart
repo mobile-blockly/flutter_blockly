@@ -94,8 +94,18 @@ class _WebViewAppState extends State<WebViewApp> {
           onChange: onChange,
           onDispose: onDispose,
           onError: onError,
+          style: '.wrapper-web {top:58px;bottom:50px}',
         ),
       ),
+      appBar: AppBar(
+        title: const Text('Title'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: const SizedBox(height: 50),
     );
   }
 }
