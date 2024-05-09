@@ -87,10 +87,10 @@ String htmlScript({String? script}) {
         document.querySelector('.wrapper')?.classList.remove('wrapper-active');
         _workspace.removeChangeListener(listener);
         _workspace.dispose();
-        let _workspace = null;
-        let _toolboxConfig = null;
-        let _state = BlocklyState();
-        let _readOnly = false;
+        _workspace = null;
+        _toolboxConfig = null;
+        _state = BlocklyState();
+        _readOnly = false;
       }
     }
 

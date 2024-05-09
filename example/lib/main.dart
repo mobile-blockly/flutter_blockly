@@ -94,7 +94,7 @@ class _WebViewAppState extends State<WebViewApp> {
           onChange: onChange,
           onDispose: onDispose,
           onError: onError,
-          style: '.wrapper-web {top:58px;bottom:50px}',
+          style: '.wrapper-web {top:58px;}',
         ),
       ),
       appBar: AppBar(
