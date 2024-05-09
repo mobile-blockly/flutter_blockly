@@ -24,8 +24,7 @@ body {
   z-index: 10;
   top: 0;
   left: 100%;
-  bottom: 0;
-  height: auto;
+  overflow: hidden;
 }
 .wrapper-active {
   left: 0;

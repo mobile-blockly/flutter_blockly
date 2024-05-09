@@ -21,19 +21,19 @@ class BlocklyData {
   final Map<String, dynamic>? json;
 
   /// dart code
-  final String dart;
+  final String? dart;
 
   /// js code
-  final String js;
+  final String? js;
 
   /// lua code
-  final String lua;
+  final String? lua;
 
   /// php code
-  final String php;
+  final String? php;
 
   /// python code
-  final String python;
+  final String? python;
 
   /// isNotEmpty method
   bool isNotEmpty() {

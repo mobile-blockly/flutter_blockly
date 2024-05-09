@@ -98,8 +98,7 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
         style: widget.style,
         script: widget.script,
         editor: widget.editor,
-      )
-      ..init();
+      );
   }
 
   @override
@@ -110,6 +109,21 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        editor.updateStyle(
+          style: widget.style,
+          width: !constraints.hasInfiniteWidth
+              ? constraints.constrainWidth()
+              : null,
+          height: !constraints.hasInfiniteHeight
+              ? constraints.constrainHeight()
+              : null,
+        );
+        editor.init();
+
+        return Container();
+      },
+    );
   }
 }

@@ -78,6 +78,8 @@ class BlocklyEditor {
 
   bool _readOnly = false;
 
+  final Element _styleElement = createWebTag(tag: 'style');
+
   /// code
   BlocklyCode _code = const BlocklyCode();
 
@@ -254,12 +256,24 @@ class BlocklyEditor {
       );
       document.body?.insertAdjacentElement('beforeend', scriptElement);
 
-      final styleElement = createWebTag(
-        tag: 'style',
-        content: html.htmlStyle(style: style),
-      );
-      document.head?.insertAdjacentElement('beforeend', styleElement);
+      _styleElement.innerHtml = html.htmlStyle(style: style);
+      document.head?.insertAdjacentElement('beforeend', _styleElement);
     }
+  }
+
+  /// update editor style
+  /// ## Example
+  /// ```dart
+  /// editor.updateStyle(style: '.wrapper-web {top: 50px; left: 0}');
+  /// ```
+  void updateStyle({String? style, num? width, num? height}) {
+    final widthFormat = width != null ? '${width}px' : '100%';
+    final heightFormat = height != null ? '${height}px' : '100%';
+
+    _styleElement.innerHtml = html.htmlStyle(
+      style:
+          '.wrapper-web {width: $widthFormat;height: $heightFormat;} ${style ?? ''}',
+    );
   }
 
   /// Post message to the Web
