@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.5.0 (2024-08-05)
+
+* fix browser view
+* add offline blockly@11.1.1
+* update widgets
+
 # 1.4.0 (2024-02-03)
 
 * add js eval event
