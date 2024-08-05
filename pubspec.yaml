@@ -3,7 +3,7 @@ description: A Flutter Blockly visual programming editor. The Blockly library ad
 repository: https://github.com/mobile-blockly/flutter_blockly
 homepage: https://github.com/mobile-blockly/flutter_blockly
 issue_tracker: https://github.com/mobile-blockly/flutter_blockly/issues
-version: 1.4.5
+version: 1.5.0
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
