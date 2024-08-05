@@ -231,6 +231,7 @@ class BlocklyEditor {
     String? style,
     String? script,
     String? editor,
+    String? packages,
   }) async {
     try {
       final scripts = [
@@ -242,20 +243,24 @@ class BlocklyEditor {
         'python_compressed',
         'html_script',
       ];
-      var packages = '';
+      var packagesSplit = '';
 
       for (var name in scripts) {
         final scriptString = await rootBundle.loadString(
           'packages/flutter_blockly/assets/$name.js',
         );
-        packages += '<script>$scriptString</script>';
+        packagesSplit += '<script>$scriptString</script>';
+      }
+
+      if (packages != null) {
+        packagesSplit += packages;
       }
 
       return html.htmlRender(
         style: html.htmlStyle(style: style),
         script: script,
         editor: editor ?? html.htmlEditor(),
-        packages: packages,
+        packages: packagesSplit,
       );
     } catch (err) {
       _onCallback(cb: onError, arg: err);

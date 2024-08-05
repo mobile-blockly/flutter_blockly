@@ -245,6 +245,7 @@ class BlocklyEditor {
     String? style,
     String? script,
     String? editor,
+    String? packages,
     Function? onPageFinished,
   }) async {
     final Element? blocklyScript = document.querySelector('#blocklyScript');
@@ -306,6 +307,13 @@ class BlocklyEditor {
             tag: 'script',
             content: script,
           ),
+        );
+      }
+
+      if (packages != null) {
+        document.body?.insertAdjacentHtml(
+          'beforeend',
+          packages,
         );
       }
     }
