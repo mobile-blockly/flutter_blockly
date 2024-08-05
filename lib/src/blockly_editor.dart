@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'html/html.dart' as html;
@@ -226,18 +227,40 @@ class BlocklyEditor {
   /// editor.blocklyController
   ///   ..loadHtmlString(editor.htmlRender());
   /// ```
-  String htmlRender({
+  Future<String> htmlRender({
     String? style,
     String? script,
     String? editor,
-    String? packages,
-  }) {
-    return html.htmlRender(
-      style: html.htmlStyle(style: style),
-      script: html.htmlScript(script: script),
-      editor: editor ?? html.htmlEditor(),
-      packages: html.htmlPackages(packages: packages),
-    );
+  }) async {
+    try {
+      final scripts = [
+        'blockly.min',
+        'dart_compressed',
+        'javascript_compressed',
+        'lua_compressed',
+        'php_compressed',
+        'python_compressed',
+        'html_script',
+      ];
+      var packages = '';
+
+      for (var name in scripts) {
+        final scriptString = await rootBundle.loadString(
+          'packages/flutter_blockly/assets/$name.js',
+        );
+        packages += '<script>$scriptString</script>';
+      }
+
+      return html.htmlRender(
+        style: html.htmlStyle(style: style),
+        script: script,
+        editor: editor ?? html.htmlEditor(),
+        packages: packages,
+      );
+    } catch (err) {
+      _onCallback(cb: onError, arg: err);
+      rethrow;
+    }
   }
 
   /// Post message to the WebViewWidget

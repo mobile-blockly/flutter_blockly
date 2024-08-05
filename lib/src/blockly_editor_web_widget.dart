@@ -34,7 +34,6 @@ class BlocklyEditorWidget extends StatefulWidget {
     this.style,
     this.script,
     this.editor,
-    this.packages,
   });
 
   /// [BlocklyOptions interface](https://developers.google.com/blockly/reference/js/blockly.blocklyoptions_interface)
@@ -64,10 +63,6 @@ class BlocklyEditorWidget extends StatefulWidget {
   /// html render editor
   final String? editor;
 
-  /// html render packages
-  /// is not used in the web
-  final String? packages;
-
   @override
   State<BlocklyEditorWidget> createState() => _BlocklyEditorWidgetState();
 }
@@ -94,11 +89,7 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
         'FlutterWebView',
         onMessageReceived: editor.onMessage,
       )
-      ..htmlRender(
-        style: widget.style,
-        script: widget.script,
-        editor: widget.editor,
-      );
+      ..htmlRender(onPageFinished: editor.init);
   }
 
   @override
@@ -109,21 +100,6 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        editor.updateStyle(
-          style: widget.style,
-          width: !constraints.hasInfiniteWidth
-              ? constraints.constrainWidth()
-              : null,
-          height: !constraints.hasInfiniteHeight
-              ? constraints.constrainHeight()
-              : null,
-        );
-        editor.init();
-
-        return Container();
-      },
-    );
+    return const HtmlElementView(viewType: 'blocklyEditor');
   }
 }

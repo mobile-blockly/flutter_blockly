@@ -19,16 +19,6 @@ body {
   background-color: #fff;
   box-sizing: border-box;
 }
-.wrapper-web {
-  position: absolute;
-  z-index: 10;
-  top: 0;
-  left: 100%;
-  overflow: hidden;
-}
-.wrapper-active {
-  left: 0;
-}
 .wrap-container {
   display: flex;
   flex: 1 0 auto;
