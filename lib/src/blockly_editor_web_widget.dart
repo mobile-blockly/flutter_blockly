@@ -94,11 +94,7 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
         'FlutterWebView',
         onMessageReceived: editor.onMessage,
       )
-      ..htmlRender(
-        style: widget.style,
-        script: widget.script,
-        editor: widget.editor,
-      );
+      ..htmlRender(onPageFinished: editor.init);
   }
 
   @override
@@ -109,21 +105,6 @@ class _BlocklyEditorWidgetState extends State<BlocklyEditorWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        editor.updateStyle(
-          style: widget.style,
-          width: !constraints.hasInfiniteWidth
-              ? constraints.constrainWidth()
-              : null,
-          height: !constraints.hasInfiniteHeight
-              ? constraints.constrainHeight()
-              : null,
-        );
-        editor.init();
-
-        return Container();
-      },
-    );
+    return const HtmlElementView(viewType: 'blocklyEditor');
   }
 }

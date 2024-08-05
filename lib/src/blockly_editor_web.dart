@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:html';
+import 'dart:ui_web';
 
+import 'package:flutter/services.dart';
 import 'package:js/js_util.dart';
 
 import 'helpers/create_web_tag.dart';
@@ -78,7 +80,9 @@ class BlocklyEditor {
 
   bool _readOnly = false;
 
-  final Element _styleElement = createWebTag(tag: 'style');
+  final Element _divElement = DivElement()
+    ..style.width = '100%'
+    ..style.height = '100%';
 
   /// code
   BlocklyCode _code = const BlocklyCode();
@@ -235,45 +239,80 @@ class BlocklyEditor {
 
   /// ## Example
   /// ```dart
-  /// editor.htmlRender();
+  /// editor.htmlRender(onPageFinished: editor.init);
   /// ```
   void htmlRender({
     String? style,
     String? script,
     String? editor,
-  }) {
-    final Element? blocklyEditor = document.querySelector('#blocklyEditor');
-
-    if (blocklyEditor == null) {
-      document.body?.insertAdjacentHtml(
-        'beforeend',
-        editor ?? html.htmlEditor(classList: ['wrapper-web']),
-      );
-
-      final scriptElement = createWebTag(
-        tag: 'script',
-        content: html.htmlScript(script: script),
-      );
-      document.body?.insertAdjacentElement('beforeend', scriptElement);
-
-      _styleElement.innerHtml = html.htmlStyle(style: style);
-      document.head?.insertAdjacentElement('beforeend', _styleElement);
-    }
-  }
-
-  /// update editor style
-  /// ## Example
-  /// ```dart
-  /// editor.updateStyle(style: '.wrapper-web {top: 50px; left: 0}');
-  /// ```
-  void updateStyle({String? style, num? width, num? height}) {
-    final widthFormat = width != null ? '${width}px' : '100%';
-    final heightFormat = height != null ? '${height}px' : '100%';
-
-    _styleElement.innerHtml = html.htmlStyle(
-      style:
-          '.wrapper-web {width: $widthFormat;height: $heightFormat;} ${style ?? ''}',
+    Function? onPageFinished,
+  }) async {
+    final Element? blocklyScript = document.querySelector('#blocklyScript');
+    _divElement.innerHtml = "";
+    _divElement.insertAdjacentElement(
+      'beforeend',
+      createWebTag(
+        tag: 'style',
+        content: html.htmlStyle(style: style),
+      ),
     );
+    _divElement.insertAdjacentHtml(
+      'beforeend',
+      editor ?? html.htmlEditor(),
+    );
+
+    final scripts = [
+      'dart_compressed',
+      'javascript_compressed',
+      'lua_compressed',
+      'php_compressed',
+      'python_compressed',
+      'html_script',
+    ];
+
+    if (blocklyScript == null) {
+      platformViewRegistry.registerViewFactory(
+        'blocklyEditor',
+        (int viewId) {
+          return _divElement;
+        },
+      );
+
+      final blockly = createWebTag(
+        tag: 'script',
+        content: await rootBundle.loadString(
+          'packages/flutter_blockly/assets/blockly.min.js',
+        ),
+      );
+      blockly.id = "blocklyScript";
+      document.body?.insertAdjacentElement('beforeend', blockly);
+
+      for (var name in scripts) {
+        document.body?.insertAdjacentElement(
+          'beforeend',
+          createWebTag(
+            tag: 'script',
+            content: await rootBundle.loadString(
+              'packages/flutter_blockly/assets/$name.js',
+            ),
+          ),
+        );
+      }
+
+      if (script != null) {
+        document.body?.insertAdjacentElement(
+          'beforeend',
+          createWebTag(
+            tag: 'script',
+            content: script,
+          ),
+        );
+      }
+    }
+
+    if (onPageFinished != null) {
+      onPageFinished();
+    }
   }
 
   /// Post message to the Web
