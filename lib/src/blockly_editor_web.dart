@@ -268,6 +268,7 @@ class BlocklyEditor {
       'lua_compressed',
       'php_compressed',
       'python_compressed',
+      'en',
       'html_script',
     ];
 
@@ -282,7 +283,7 @@ class BlocklyEditor {
       final blockly = createWebTag(
         tag: 'script',
         content: await rootBundle.loadString(
-          'packages/flutter_blockly/assets/blockly.min.js',
+          'packages/flutter_blockly/assets/blockly_compressed.js',
         ),
       );
       blockly.id = "blocklyScript";

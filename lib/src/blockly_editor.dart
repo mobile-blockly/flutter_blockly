@@ -235,12 +235,13 @@ class BlocklyEditor {
   }) async {
     try {
       final scripts = [
-        'blockly.min',
+        'blockly_compressed',
         'dart_compressed',
         'javascript_compressed',
         'lua_compressed',
         'php_compressed',
         'python_compressed',
+        'en',
         'html_script',
       ];
       var packagesSplit = '';

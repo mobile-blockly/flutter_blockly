@@ -21,14 +21,7 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 
 flutter:
-  plugin:
-    platforms:
-      android:
-        default_package: flutter_blockly
-      ios:
-        default_package: flutter_blockly
-      web:
-        default_package: flutter_blockly
+  
   assets:
     - assets/
 

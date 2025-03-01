@@ -1,11 +1,11 @@
 {
-    "name": "flutter_blockly_web_example",
-    "short_name": "flutter_blockly_web_example",
+    "name": "test2",
+    "short_name": "test2",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Demonstrates how to use the flutter_blockly_web plugin.",
+    "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
