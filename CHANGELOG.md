@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+# 1.6.0 (2025-03-02)
+
+* update blockly@11.2.1
+* update flutter web
+
 # 1.5.0 (2024-08-05)
 
 * fix browser view
