@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'dart:html';
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 import 'dart:ui_web';
 
 import 'package:flutter/services.dart';
-import 'package:js/js_util.dart';
+import 'package:web/web.dart' as web;
 
 import 'helpers/create_web_tag.dart';
 import 'helpers/flutter_web_view.dart';
@@ -80,7 +81,7 @@ class BlocklyEditor {
 
   bool _readOnly = false;
 
-  final Element _divElement = DivElement()
+  final web.Element _divElement = web.HTMLDivElement()
     ..style.width = '100%'
     ..style.height = '100%';
 
@@ -92,7 +93,7 @@ class BlocklyEditor {
   /// editor.init();
   /// ```
   void init({BlocklyOptions? workspaceConfiguration, dynamic initial}) {
-    final Element? editor = document.querySelector('#blocklyEditor');
+    final web.Element? editor = web.document.querySelector('#blocklyEditor');
     if (_toolboxConfig != null || editor == null) {
       return;
     }
@@ -143,8 +144,7 @@ class BlocklyEditor {
   }) {
     final webView = FlutterWebView();
     webView.postMessage = onMessageReceived;
-    final export = createDartExport(webView);
-    setProperty(window, name, export);
+    (web.window as JSObject)['FlutterWebView'] = webView as JSAny?;
   }
 
   /// It is called on message from the WebViewWidget
@@ -248,8 +248,9 @@ class BlocklyEditor {
     String? packages,
     Function? onPageFinished,
   }) async {
-    final Element? blocklyScript = document.querySelector('#blocklyScript');
-    _divElement.innerHtml = "";
+    final web.Element? blocklyScript =
+        web.document.querySelector('#blocklyScript');
+    _divElement.setHTMLUnsafe("" as JSString);
     _divElement.insertAdjacentElement(
       'beforeend',
       createWebTag(
@@ -257,12 +258,13 @@ class BlocklyEditor {
         content: html.htmlStyle(style: style),
       ),
     );
-    _divElement.insertAdjacentHtml(
+    _divElement.insertAdjacentHTML(
       'beforeend',
-      editor ?? html.htmlEditor(),
+      (editor ?? html.htmlEditor()) as JSString,
     );
 
     final scripts = [
+      'blocks_compressed',
       'dart_compressed',
       'javascript_compressed',
       'lua_compressed',
@@ -287,10 +289,10 @@ class BlocklyEditor {
         ),
       );
       blockly.id = "blocklyScript";
-      document.body?.insertAdjacentElement('beforeend', blockly);
+      web.document.body?.insertAdjacentElement('beforeend', blockly);
 
       for (var name in scripts) {
-        document.body?.insertAdjacentElement(
+        web.document.body?.insertAdjacentElement(
           'beforeend',
           createWebTag(
             tag: 'script',
@@ -302,7 +304,7 @@ class BlocklyEditor {
       }
 
       if (script != null) {
-        document.body?.insertAdjacentElement(
+        web.document.body?.insertAdjacentElement(
           'beforeend',
           createWebTag(
             tag: 'script',
@@ -312,9 +314,9 @@ class BlocklyEditor {
       }
 
       if (packages != null) {
-        document.body?.insertAdjacentHtml(
+        web.document.body?.insertAdjacentHTML(
           'beforeend',
-          packages,
+          packages as JSString,
         );
       }
     }
@@ -331,12 +333,9 @@ class BlocklyEditor {
   /// ```
   Future<void> postData({required String event, dynamic data}) async {
     try {
-      callMethod<void>(
-        window,
-        'message',
-        [
-          jsonEncode({'event': event, 'data': data}),
-        ],
+      web.window.callMethod(
+        'message' as JSString,
+        jsonEncode({'event': event, 'data': data}) as JSString,
       );
     } catch (err) {
       _onCallback(cb: onError, arg: err);
